@@ -4,7 +4,7 @@
 #include <string.h>
 
 #include "sim_arduboy.h"
-#include "arduboy_simavr.h"
+#include "arduboy_avr.h"
 #include "arduboy_sdl.h"
 
 
@@ -55,7 +55,6 @@ int main (int argc, char *argv[])
 {
 	int ret;
 	struct sim_arduboy_opts opts;
-	struct avr_t *avr = NULL;
 
 	memset(&opts, 0, sizeof(opts));
 	ret = parse_cmdline(argc, argv, &opts);
@@ -63,14 +62,20 @@ int main (int argc, char *argv[])
 		goto done;
 	}
 
-	ret = arduboy_simavr_setup(&opts, &avr);
+	opts.win_width = OLED_WIDTH_PX * opts.pixel_size;
+	opts.win_height = OLED_HEIGHT_PX * opts.pixel_size;
+
+	ret = arduboy_avr_setup(&opts);
 	if (!ret) {
-		ret = arduboy_sdl_setup(&opts, avr);
+		ret = arduboy_sdl_setup(&opts);
 		if (!ret) {
-			ret = arduboy_sdl_loop();
+			while (!ret) {
+				ret = arduboy_sdl_loop();
+				arduboy_avr_loop();
+			}
 			arduboy_sdl_teardown();
 		}
-		arduboy_simavr_teardown();
+		arduboy_avr_teardown();
 	}
 
 done:

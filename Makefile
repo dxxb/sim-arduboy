@@ -48,7 +48,7 @@ board = ${OBJ}/${target}.elf
 ${board} : ${OBJ}/ssd1306_virt.o
 ${board} : ${OBJ}/ssd1306_gl.o
 ${board} : ${OBJ}/arduboy_sdl.o
-${board} : ${OBJ}/arduboy_simavr.o
+${board} : ${OBJ}/arduboy_avr.o
 ${board} : ${OBJ}/cli.o
 
 ${target}: ${board}

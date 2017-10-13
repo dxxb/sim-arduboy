@@ -2,8 +2,14 @@
 #include <stdbool.h>
 
 
-#define LCD_WIDTH_PX (128)
-#define LCD_HEIGHT_PX (64)
+#define OLED_WIDTH_PX (128)
+#define OLED_HEIGHT_PX (64)
+
+#define LUMA_INC (256*2/3)
+#define LUMA_DECAY (256/3)
+
+#define SSD1306_FRAME_PERIOD_US (7572)
+#define GL_FRAME_PERIOD_US (SSD1306_FRAME_PERIOD_US*12)
 
 
 struct sim_arduboy_opts {
@@ -12,4 +18,6 @@ struct sim_arduboy_opts {
 	bool debug;
 	int verbose;
 	int pixel_size;
+	int win_width;
+	int win_height;
 };
