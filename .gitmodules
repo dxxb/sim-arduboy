@@ -1,0 +1,4 @@
+[submodule "simavr"]
+	path = simavr
+	url = git@github.com:dxxb/simavr-arduboy.git
+	branch = master
