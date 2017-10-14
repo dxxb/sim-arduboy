@@ -16,7 +16,7 @@
 	# You should have received a copy of the GNU General Public License
 	# along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-target = sim_arduboy_sdl
+target = sim_arduboy
 simavr-repo = ./simavr
 simavr = ${simavr-repo}/simavr
 simavr-parts = ${simavr-repo}/examples/parts
@@ -52,6 +52,7 @@ ${board} : ${OBJ}/arduboy_avr.o
 ${board} : ${OBJ}/cli.o
 
 ${target}: ${board}
+	cp ${board} $@
 	@echo $@ done
 
 clean: clean-${OBJ}
