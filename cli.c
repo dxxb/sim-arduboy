@@ -48,13 +48,17 @@ int parse_cmdline(int argc, char *argv[], struct sim_arduboy_opts *opts)
 	int ch, ret = -1;
 
 	/* set defaults */
+	opts->gdb_port = 1234;
 	opts->pixel_size = 2;
 	opts->key2btn = default_key2btn;
 	/* parse command line */
-	while ((ch = getopt(argc, argv, "hdvk:")) != -1) {
+	while ((ch = getopt(argc, argv, "hdvk:g:")) != -1) {
 		switch (ch) {
 			case 'd':
 				opts->debug = true;
+				break;
+			case 'g':
+				opts->gdb_port = atoi(optarg);
 				break;
 			case 'v':
 				opts->verbose++;
