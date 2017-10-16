@@ -29,31 +29,27 @@
 static struct mod_state {
 	SDL_Window *sdl_window;
 	SDL_GLContext sdl_gl_context;
+	int *key2btn;
 } mod_s;
 
+int default_key2btn[BTN_COUNT] = {
+	SDLK_UP,
+	SDLK_DOWN,
+	SDLK_LEFT,
+	SDLK_RIGHT,
+	SDLK_z,
+	SDLK_x,
+};
 
-static inline enum button_e key_to_button_e(int key)
+static inline enum button_e key_to_button_e(int keysym)
 {
-	switch (key)
-	{
-		case SDLK_UP:
-			return BTN_UP;
-		case SDLK_DOWN:
-			return BTN_DOWN;
-		case SDLK_LEFT:
-			return BTN_LEFT;
-		case SDLK_RIGHT:
-			return BTN_RIGHT;
-		case SDLK_z:
-			return BTN_A;
-		case SDLK_x:
-			return BTN_B;
-		case SDLK_q:
-			exit(0);
+	for (int i=0; i<BTN_COUNT; i++) {
+		if (keysym == mod_s.key2btn[i]) {
+			return i;
+		}
 	}
 	return -1;
 }
-
 
 static inline enum button_e dpad_to_button_e(uint8_t dpad_btn)
 {
@@ -98,7 +94,7 @@ int arduboy_sdl_setup(struct sim_arduboy_opts *opts)
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 		return -1;
 	}
-
+	mod_s.key2btn = opts->key2btn;
 	mod_s.sdl_window = SDL_CreateWindow("Sim-Arduboy",
 										SDL_WINDOWPOS_UNDEFINED,
 										SDL_WINDOWPOS_UNDEFINED,
@@ -121,6 +117,10 @@ int arduboy_sdl_loop(void)
 			case SDL_KEYDOWN:
 				if (event.key.repeat)
 					continue;
+				/* handle quit 'q' keypress */
+				if (event.key.keysym.sym == SDLK_q) {
+					return -1;
+				}
 				key_event(event.key.keysym.sym, true);
 				break;
 			case SDL_KEYUP:

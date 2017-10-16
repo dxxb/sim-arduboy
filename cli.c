@@ -19,6 +19,7 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "sim_arduboy.h"
@@ -32,20 +33,34 @@ void print_usage(char *argv[])
 }
 
 
+void parse_keymap(struct sim_arduboy_opts *opts, char *arg)
+{
+	int i=0;
+	for (char *s = strtok(arg, ", "); s && i<BTN_COUNT; s = strtok(NULL, ", ")) {
+		opts->key2btn[i] = atoi(s);
+		i++;
+	}
+}
+
+
 int parse_cmdline(int argc, char *argv[], struct sim_arduboy_opts *opts)
 {
 	int ch, ret = -1;
 
 	/* set defaults */
 	opts->pixel_size = 2;
+	opts->key2btn = default_key2btn;
 	/* parse command line */
-	while ((ch = getopt(argc, argv, "hdv")) != -1) {
+	while ((ch = getopt(argc, argv, "hdvk:")) != -1) {
 		switch (ch) {
 			case 'd':
 				opts->debug = true;
 				break;
 			case 'v':
 				opts->verbose++;
+				break;
+			case 'k':
+				parse_keymap(opts, optarg);
 				break;
 			case 'h':
 				ret = 0;
@@ -82,6 +97,15 @@ int main (int argc, char *argv[])
 
 	opts.win_width = OLED_WIDTH_PX * opts.pixel_size;
 	opts.win_height = OLED_HEIGHT_PX * opts.pixel_size;
+
+	printf("Keymap: ");
+	for (int i = 0; i < BTN_COUNT; i++) {
+		printf("%d", opts.key2btn[i]);
+		if (i < BTN_COUNT-1) {
+			printf(",");
+		}
+	}
+	printf("\n");
 
 	ret = arduboy_avr_setup(&opts);
 	if (!ret) {

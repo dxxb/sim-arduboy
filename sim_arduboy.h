@@ -30,10 +30,23 @@
 #define GL_FRAME_PERIOD_US (SSD1306_FRAME_PERIOD_US*12)
 
 
+enum button_e {
+	BTN_UP = 0,
+	BTN_DOWN,
+	BTN_LEFT,
+	BTN_RIGHT,
+	BTN_A,
+	BTN_B,
+	BTN_COUNT,
+};
+
+extern int default_key2btn[BTN_COUNT];
+
 struct sim_arduboy_opts {
 	char *hex_file_path;
 	int gdb_port;
 	bool debug;
+	int *key2btn;
 	int verbose;
 	int pixel_size;
 	int win_width;
