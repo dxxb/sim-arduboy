@@ -17,6 +17,8 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <stdint.h>
+
 struct ssd1306_t;
 
 void ssd1306_gl_update_lumamap(struct ssd1306_t *ssd1306, const uint8_t luma_decay, const uint8_t luma_inc);
