@@ -26,7 +26,7 @@ IPATH += ${simavr-parts}
 IPATH += ${simavr}/include
 IPATH += ${simavr}/sim
 
-VPATH = .
+VPATH = ./src
 VPATH += ${simavr-repo}/examples/parts
 
 LDFLAGS += -L${simavr}/${OBJ} -l SDL2
