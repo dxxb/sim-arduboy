@@ -10,15 +10,9 @@ Install homebrew by running:
 > /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 ```
 
-Then install the simavr tap and install all simavr’s dependencies with:
-``` ShellSession
-> brew tap osx-cross/avr
-> brew install --HEAD osx-cross/avr/simavr
+Then install SDL2 and ELF libraries:
 ```
-
-And finally install the SDL2 libraries:
-```
-> brew install sdl2
+> brew install sdl2 libelf
 ```
 
 ### Windows (TBD)
@@ -29,6 +23,7 @@ And finally install the SDL2 libraries:
 Clone repository and build:
 ``` ShellSession
 > git clone --recursive https://github.com/dxxb/sim-arduboy.git
+> cd sim-arduboy
 > make
 ```
 
