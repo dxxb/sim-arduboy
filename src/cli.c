@@ -29,7 +29,7 @@
 
 void print_usage(char *argv[])
 {
-	fprintf(stderr, "%s [-d] [-v] filename.hex\n", argv[0]);
+	fprintf(stderr, "%s [-d] [-v] [-p pixel_size] [-k keymap] filename.hex\n", argv[0]);
 }
 
 
