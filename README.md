@@ -22,6 +22,12 @@ Then install SDL2 and ELF libraries:
 ### Windows (TBD)
 ### Linux (TBD)
 
+### Ubuntu/Debian
+
+``` ShellSession
+> sudo apt-get install build-essential libelf-dev libsdl2-dev freeglut3-dev
+```
+
 ## Build
 
 ### Command line
