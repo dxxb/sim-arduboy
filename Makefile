@@ -31,7 +31,7 @@ SIMAVR-OBJ := obj-${shell $(CC) -dumpmachine}
 OBJ-PREFIX := obj
 OBJ := ${OBJ-PREFIX}/${SIMAVR-OBJ}
 
-LDFLAGS += -L${simavr}/${SIMAVR-OBJ} -lsimavr
+LDFLAGS += -L${simavr}/${SIMAVR-OBJ} -lsimavr -lelf
 LDFLAGS += -l SDL2
 
 CFLAGS  += -O2 -Wall -Wextra -Wno-unused-parameter
