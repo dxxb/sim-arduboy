@@ -122,6 +122,10 @@ int main (int argc, char *argv[])
 				ret = arduboy_sdl_loop();
 				arduboy_avr_loop();
 			}
+			if (ret == -1) {
+				/* successful exit */
+				ret = 0;
+			}
 			arduboy_sdl_teardown();
 		}
 		arduboy_avr_teardown();
