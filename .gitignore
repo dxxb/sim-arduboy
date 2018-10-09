@@ -1,0 +1,24 @@
+# JetBrains IDE's
+.idea/
+
+# VisualStudioCode
+.vscode/
+
+# MacOS files useful to ignore
+.DS_Store
+._*
+
+# Temporary files
+*~
+*.log
+*.tmp
+
+# Prerequisites files
+*.d
+
+# Object files
+*.[oa]
+*.elf
+
+# Compiled executables
+sim_arduboy
