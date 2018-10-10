@@ -19,6 +19,13 @@ Then install SDL2 and ELF libraries:
 > brew install sdl2 libelf
 ```
 
+If avr-gcc cross-compiler is not installed on your system:
+
+```
+> brew tap osx-cross/avr
+> brew install avr-gcc
+```
+ 
 ### Windows (TBD)
 ### Linux (TBD)
 
@@ -51,13 +58,13 @@ Run your .hex file:
 > ./sim_arduboy filename.hex
 ```
 
-### CMake (tested only on OSX)
+### CMake (OSX)
 
 Create XCode project files:
 
 ``` ShellSession
 > cd sim-arduboy
-> cmake ./cmake
+> cmake -G Xcode ./cmake
 ```
 
 Then open with XCode and build.
