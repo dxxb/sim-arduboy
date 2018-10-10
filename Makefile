@@ -31,8 +31,12 @@ SIMAVR-OBJ := obj-${shell $(CC) -dumpmachine}
 OBJ-PREFIX := obj
 OBJ := ${OBJ-PREFIX}/${SIMAVR-OBJ}
 
-LDFLAGS += -L${simavr}/${SIMAVR-OBJ} -lsimavr -lelf
-LDFLAGS += -l SDL2
+LDFLAGS += -lSDL2 -lelf
+ifeq (${shell uname}, Darwin)
+LDFLAGS += -L${simavr}/${SIMAVR-OBJ} -lsimavr
+else
+LDFLAGS += -L${simavr}/${SIMAVR-OBJ} -l:libsimavr.a
+endif
 
 CFLAGS  += -O2 -Wall -Wextra -Wno-unused-parameter
 CFLAGS  += -Wno-unused-result -Wno-missing-field-initializers
