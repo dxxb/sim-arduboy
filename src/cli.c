@@ -76,10 +76,8 @@ int parse_cmdline(int argc, char *argv[], struct sim_arduboy_opts *opts)
 				goto usage;
 		}
 	}
-	argc -= optind;
-	argv += optind;
-	if (argc) {
-		opts->hex_file_path = argv[0];
+	if (argc > optind) {
+		opts->hex_file_path = argv[optind];
 	} else {
 		goto usage;
 	}
