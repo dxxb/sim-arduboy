@@ -19,13 +19,6 @@ Then install SDL2 and ELF libraries:
 > brew install sdl2 libelf
 ```
 
-If avr-gcc cross-compiler is not installed on your system:
-
-```
-> brew tap osx-cross/avr
-> brew install avr-gcc
-```
- 
 ### Windows (TBD)
 ### Linux (TBD)
 
@@ -59,6 +52,13 @@ Run your .hex file:
 ```
 
 ### CMake (OSX)
+
+If avr-gcc cross-compiler is not installed on your system (only needed when building via CMake):
+
+```
+> brew tap osx-cross/avr
+> brew install avr-gcc
+```
 
 Create XCode project files:
 
