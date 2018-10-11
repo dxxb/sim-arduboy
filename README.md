@@ -15,14 +15,11 @@ Install homebrew by running:
 
 Then install SDL2 and ELF libraries:
 
-```
+``` ShellSession
 > brew install sdl2 libelf
 ```
 
-### Windows (TBD)
-### Linux (TBD)
-
-### Ubuntu/Debian
+### Ubuntu/Debian Linux
 
 ``` ShellSession
 > sudo apt-get install build-essential libelf-dev libsdl2-dev freeglut3-dev
@@ -55,7 +52,7 @@ Run your .hex file:
 
 If avr-gcc cross-compiler is not installed on your system (only needed when building via CMake):
 
-```
+``` ShellSession
 > brew tap osx-cross/avr
 > brew install avr-gcc
 ```
