@@ -24,6 +24,7 @@
 #include <stdlib.h>
 
 #include <sim_avr.h>
+#include <avr_adc.h>
 #include <avr_ioport.h>
 #include <avr_extint.h>
 #include <sim_hex.h>
@@ -133,6 +134,13 @@ void arduboy_avr_button_event(enum button_e btn_e, bool pressed)
 	}
 }
 
+void arduboy_adc_update_hook(struct avr_irq_t *irq, uint32_t value, void *param)
+{
+	avr_irq_t *iop_irq = avr_io_getirq(mod_s.avr, AVR_IOCTL_ADC_GETIRQ, ADC_IRQ_ADC1);
+	uint16_t milivolts = (uint16_t)(rand() % ADC_VREF_V256);
+	avr_raise_irq(iop_irq, milivolts);
+}
+
 void arduboy_avr_loop(void)
 {
 	avr_t *avr = mod_s.avr;
@@ -184,6 +192,7 @@ int arduboy_avr_setup(struct sim_arduboy_opts *opts)
 	avr->frequency = MHZ_16;
 	avr->sleep = avr_callback_sleep_sync;
 	avr->run_cycle_limit = avr_usec_to_cycles(avr, 2*GL_FRAME_PERIOD_US);
+	avr->aref = ADC_VREF_V256;
 
 	/* setup and connect display controller */
 	ssd1306_init(avr, &mod_s.ssd1306, OLED_WIDTH_PX, OLED_HEIGHT_PX);
@@ -209,6 +218,13 @@ int arduboy_avr_setup(struct sim_arduboy_opts *opts)
 	/* Setup display render timers */
 	avr_cycle_timer_register_usec(avr, SSD1306_FRAME_PERIOD_US, update_luma, &mod_s.ssd1306);
 	avr_cycle_timer_register_usec(avr, GL_FRAME_PERIOD_US, render_timer_callback, &mod_s.ssd1306);
+
+	/* Setup initial random seed */
+	srand((unsigned int)time(NULL));
+
+	/* Setup ADC1 update hook for Arduboy initRandomSeed() function */
+	avr_irq_t *iop_irq = avr_io_getirq(avr, AVR_IOCTL_ADC_GETIRQ, ADC_IRQ_OUT_TRIGGER);
+	avr_irq_register_notify(iop_irq, arduboy_adc_update_hook, NULL);
 
 	/* setup for GDB debugging */
 	avr->gdb_port = opts->gdb_port;
