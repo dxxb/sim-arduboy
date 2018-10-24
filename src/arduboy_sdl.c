@@ -91,10 +91,13 @@ void arduboy_sdl_render_frame(void)
 
 int arduboy_sdl_setup(struct sim_arduboy_opts *opts)
 {
-	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+	if (SDL_Init(SDL_INIT_VIDEO|SDL_INIT_GAMECONTROLLER) < 0) {
 		return -1;
 	}
 	mod_s.key2btn = opts->key2btn;
+	for(int n=0; n<SDL_NumJoysticks(); n++) {
+		SDL_GameControllerOpen(n);
+	}
 	mod_s.sdl_window = SDL_CreateWindow("Sim-Arduboy",
 										SDL_WINDOWPOS_UNDEFINED,
 										SDL_WINDOWPOS_UNDEFINED,
