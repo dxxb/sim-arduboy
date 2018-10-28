@@ -95,9 +95,8 @@ static void avr_callback_sleep_sync(
 		return;
 	}
 
-	uint64_t sleep_us = (deadline_ns - runtime_ns)/1000;
+	useconds_t sleep_us = (useconds_t) ((deadline_ns - runtime_ns) / 1000);
 	usleep(sleep_us);
-	return;
 }
 
 static avr_cycle_count_t update_luma(
@@ -129,7 +128,7 @@ void arduboy_avr_button_event(enum button_e btn_e, bool pressed)
 {
 	struct button_info *btn = (btn_e < BTN_COUNT) ? &buttons[btn_e] : NULL;
 	if (btn && btn->pressed != pressed) {
-		avr_raise_irq(btn->irq, !pressed);
+		avr_raise_irq(btn->irq, (uint32_t) !pressed);
 		btn->pressed = pressed;
 	}
 }
@@ -188,7 +187,7 @@ int arduboy_avr_setup(struct sim_arduboy_opts *opts)
 	}
 
 	/* more simulation parameters */
-	avr->log = 1 + opts->verbose;
+	avr->log = (uint8_t) (1 + opts->verbose);
 	avr->frequency = MHZ_16;
 	avr->sleep = avr_callback_sleep_sync;
 	avr->run_cycle_limit = avr_usec_to_cycles(avr, 2*GL_FRAME_PERIOD_US);
@@ -203,7 +202,7 @@ int arduboy_avr_setup(struct sim_arduboy_opts *opts)
 	for (int btn_idx=0; btn_idx<BTN_COUNT; btn_idx++) {
 		struct button_info *binfo = &buttons[btn_idx];
 		binfo->irq = avr_alloc_irq(&avr->irq_pool, 0, 1, &binfo->name);
-		uint32_t iop_ctl = AVR_IOCTL_IOPORT_GETIRQ(binfo->port_name);
+		uint32_t iop_ctl = (uint32_t) AVR_IOCTL_IOPORT_GETIRQ(binfo->port_name);
 		avr_irq_t *iop_irq = avr_io_getirq(avr, iop_ctl, binfo->port_idx);
 		avr_connect_irq(binfo->irq, iop_irq);
 		/* pull up pin */
@@ -213,7 +212,7 @@ int arduboy_avr_setup(struct sim_arduboy_opts *opts)
 	/* Take simulation start time */
 	struct timespec tp;
 	clock_gettime(CLOCK_MONOTONIC_RAW, &tp);
-	mod_s.start_time_ns = tp.tv_sec*1000000000+tp.tv_nsec;
+	mod_s.start_time_ns = (uint64_t) (tp.tv_sec * 1000000000 + tp.tv_nsec);
 
 	/* Setup display render timers */
 	avr_cycle_timer_register_usec(avr, SSD1306_FRAME_PERIOD_US, update_luma, &mod_s.ssd1306);
