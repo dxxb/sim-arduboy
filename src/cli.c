@@ -18,6 +18,7 @@
 */
 
 #include <unistd.h>
+#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,6 +31,16 @@
 void print_usage(char *argv[])
 {
 	fprintf(stderr, "%s [-d] [-v] [-p pixel_size] [-k keymap] filename.hex\n", argv[0]);
+}
+
+long convert_string2long(const char *s)
+{
+	errno = 0;
+	long val = strtol(optarg, NULL, 0);
+	if (errno) {
+		fprintf(stderr, "Invalid integer value: %s\n", s);
+	}
+	return val;
 }
 
 
@@ -58,10 +69,10 @@ int parse_cmdline(int argc, char *argv[], struct sim_arduboy_opts *opts)
 				opts->debug = true;
 				break;
 			case 'g':
-				opts->gdb_port = atoi(optarg);
+				opts->gdb_port = convert_string2long(optarg);
 				break;
 			case 'p':
-				opts->pixel_size = atoi(optarg);
+				opts->pixel_size = convert_string2long(optarg);
 				break;
 			case 'v':
 				opts->verbose++;
@@ -74,6 +85,9 @@ int parse_cmdline(int argc, char *argv[], struct sim_arduboy_opts *opts)
 				goto usage;
 			default:
 				goto usage;
+		}
+		if (errno) {
+			goto usage;
 		}
 	}
 	if (argc > optind) {
