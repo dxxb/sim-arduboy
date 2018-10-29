@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 
-project(arduboy-emulator)
+project(sim_arduboy)
 
 get_filename_component(PARENT_DIRECTORY ${CMAKE_CURRENT_LIST_DIR} DIRECTORY)
 execute_process(COMMAND ${CMAKE_C_COMPILER} -dumpmachine OUTPUT_VARIABLE SIMAVR_OBJ_DIRNAME)
@@ -27,10 +27,10 @@ add_custom_target(
         WORKING_DIRECTORY ${PARENT_DIRECTORY}/simavr/simavr
 )
 
-add_executable(arduboy-emulator ${ARDUBOY_EMU_SRCS})
-add_dependencies(arduboy-emulator simavr_lib)
+add_executable(sim_arduboy ${ARDUBOY_EMU_SRCS})
+add_dependencies(sim_arduboy simavr_lib)
 
-target_link_libraries(arduboy-emulator
+target_link_libraries(sim_arduboy
         ${PARENT_DIRECTORY}/simavr/simavr/obj-${SIMAVR_OBJ_DIRNAME}/libsimavr.a
         ${SDL2_LIBRARIES}
         ${OPENGL_LIBRARIES}
