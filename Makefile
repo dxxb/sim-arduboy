@@ -33,6 +33,7 @@ OBJ := ${OBJ-PREFIX}/${SIMAVR-OBJ}
 
 LDFLAGS += -lSDL2 -lelf
 ifeq (${shell uname}, Darwin)
+CFLAGS += -DGL_SILENCE_DEPRECATION
 LDFLAGS += -L${simavr}/${SIMAVR-OBJ} -lsimavr
 else
 LDFLAGS += -L${simavr}/${SIMAVR-OBJ} -l:libsimavr.a
