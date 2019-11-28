@@ -69,6 +69,8 @@ static inline enum button_e dpad_to_button_e(uint8_t dpad_btn)
 		case SDL_CONTROLLER_BUTTON_B:
 		case SDL_CONTROLLER_BUTTON_Y:
 			return BTN_B;
+		default:
+			break;
 	}
 	return -1;
 }
@@ -136,6 +138,8 @@ int arduboy_sdl_loop(void)
 				break;
 			case SDL_CONTROLLERBUTTONUP:
 				dpad_event(event.cbutton.button, false);
+				break;
+			default:
 				break;
 		}
 	}
