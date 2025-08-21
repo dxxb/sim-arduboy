@@ -31,7 +31,7 @@ SIMAVR-OBJ := obj-${shell $(CC) -dumpmachine}
 OBJ-PREFIX := obj
 OBJ := ${OBJ-PREFIX}/${SIMAVR-OBJ}
 
-LDFLAGS += -lSDL2 -lelf
+LDFLAGS += -lSDL2 -lelf -lGL
 ifeq (${shell uname}, Darwin)
 CFLAGS += -DGL_SILENCE_DEPRECATION
 LDFLAGS += -L${simavr}/${SIMAVR-OBJ} -lsimavr
